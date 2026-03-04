@@ -6,10 +6,17 @@ feedparser でフィードを直接取得する。サーバー不要。
 import time
 from calendar import timegm
 from dataclasses import dataclass
-from time import mktime
 
 import feedparser
+import requests
 import yaml
+
+# 多くのサイトがUser-Agent無しのリクエストをブロックするため、
+# ブラウザに見せかけるヘッダーを設定
+_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (compatible; DailyDigestBot/1.0; +https://github.com)",
+    "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
+}
 
 
 @dataclass
@@ -34,6 +41,17 @@ def _parse_timestamp(entry) -> int:
     return int(time.time())
 
 
+def _fetch_raw(url: str, timeout: int = 30) -> str | None:
+    """requests でフィードのRaw XMLを取得。リダイレクトやbot対策に対応。"""
+    try:
+        resp = requests.get(url, headers=_HEADERS, timeout=timeout, allow_redirects=True)
+        if resp.status_code == 200:
+            return resp.text
+    except Exception as e:
+        print(f"  [WARN] HTTP fetch failed: {url} ({e})")
+    return None
+
+
 def fetch_feed(
     feed_url: str,
     feed_name: str,
@@ -42,14 +60,19 @@ def fetch_feed(
     limit: int = 50,
 ) -> list[Article]:
     """単一フィードから記事を取得。"""
+    # まず requests で取得してからfeedparserに渡す（User-Agent対策）
+    raw = _fetch_raw(feed_url)
+    if raw is None:
+        return []
+
     try:
-        d = feedparser.parse(feed_url)
+        d = feedparser.parse(raw)
     except Exception as e:
         print(f"  [WARN] Feed parse failed: {feed_url} ({e})")
         return []
 
     if d.bozo and not d.entries:
-        print(f"  [WARN] Feed error: {feed_url} ({d.bozo_exception})")
+        print(f"  [WARN] Feed parse error: {feed_url} ({d.bozo_exception})")
         return []
 
     feed_title = d.feed.get("title", feed_name) if d.feed else feed_name
@@ -111,7 +134,6 @@ def fetch_category_feeds(
         print(f"    Fetching: {feed_name}")
         articles = fetch_feed(feed_url, feed_name, category, since_timestamp, limit)
         all_articles.extend(articles)
-        # レート制限を避ける最低限のsleep
         time.sleep(0.3)
 
     # 新しい順にソートして上位を返す
