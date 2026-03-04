@@ -1,51 +1,107 @@
 # ============================================================
 # FreshRSS Feed Configuration
 # カテゴリ別にフィードURLを宣言的に管理
-# このファイルを変更して import_feeds.py を再実行すれば差分更新
 # ============================================================
 
 categories:
   AI_RESEARCH:
-    description: "AI/ML 最新研究・論文"
+    description: "AI/ML 最新研究・論文・研究機関ブログ"
     feeds:
+      # --- 論文 ---
       - name: "arXiv cs.AI"
         url: "https://rss.arxiv.org/rss/cs.AI"
       - name: "arXiv cs.CL (NLP)"
         url: "https://rss.arxiv.org/rss/cs.CL"
       - name: "arXiv cs.LG (Machine Learning)"
         url: "https://rss.arxiv.org/rss/cs.LG"
+      - name: "arXiv cs.CV (Computer Vision)"
+        url: "https://rss.arxiv.org/rss/cs.CV"
+      - name: "Hugging Face Papers"
+        url: "https://huggingface.co/papers/rss"
+      # --- 研究機関ブログ ---
       - name: "Google AI Blog"
         url: "https://blog.google/technology/ai/rss/"
       - name: "OpenAI Blog"
         url: "https://openai.com/blog/rss.xml"
       - name: "DeepMind Blog"
         url: "https://deepmind.google/blog/rss.xml"
+      - name: "Meta AI Blog"
+        url: "https://ai.meta.com/blog/rss/"
+      - name: "Anthropic Research"
+        url: "https://www.anthropic.com/research/rss"
+      - name: "Microsoft Research Blog"
+        url: "https://www.microsoft.com/en-us/research/feed/"
+      # --- キュレーション ---
+      - name: "The Batch (Andrew Ng)"
+        url: "https://www.deeplearning.ai/the-batch/feed/"
+      - name: "Ahead of AI (Sebastian Raschka)"
+        url: "https://magazine.sebastianraschka.com/feed"
+      - name: "Import AI Newsletter"
+        url: "https://importai.substack.com/feed"
 
   AI_PRODUCT_SAAS:
-    description: "AI プロダクト・SaaS動向"
+    description: "AI プロダクト・SaaS・開発者ツール動向"
     feeds:
+      # --- テックメディア ---
       - name: "TechCrunch AI"
         url: "https://techcrunch.com/category/artificial-intelligence/feed/"
       - name: "The Verge AI"
         url: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+      - name: "Ars Technica - AI"
+        url: "https://feeds.arstechnica.com/arstechnica/technology-lab"
+      - name: "VentureBeat AI"
+        url: "https://venturebeat.com/category/ai/feed/"
+      # --- 開発者コミュニティ ---
       - name: "Hacker News (Best)"
         url: "https://hnrss.org/best"
+      - name: "Lobsters"
+        url: "https://lobste.rs/rss"
       - name: "Product Hunt"
         url: "https://www.producthunt.com/feed"
+      # --- AI特化 ---
+      - name: "The Information AI"
+        url: "https://www.theinformation.com/feed"
+      - name: "Ben's Bites"
+        url: "https://bensbites.beehiiv.com/feed"
+      - name: "AI Supremacy"
+        url: "https://aisupremacy.substack.com/feed"
 
   MACRO_STRUCTURE:
-    description: "マクロ経済・構造変化"
+    description: "マクロ経済・地政学・構造変化・エネルギー"
     feeds:
+      # --- 経済・市場 ---
       - name: "Bloomberg Markets"
         url: "https://feeds.bloomberg.com/markets/news.rss"
       - name: "Reuters Business"
         url: "https://www.reutersagency.com/feed/"
+      - name: "Financial Times"
+        url: "https://www.ft.com/rss/home"
+      - name: "The Economist"
+        url: "https://www.economist.com/finance-and-economics/rss.xml"
+      # --- テクノロジー・構造変化 ---
       - name: "MIT Technology Review"
         url: "https://www.technologyreview.com/feed/"
+      - name: "Stratechery"
+        url: "https://stratechery.com/feed/"
+      - name: "Benedict Evans"
+        url: "https://www.ben-evans.com/feed"
+      # --- エネルギー・気候 ---
+      - name: "Carbon Brief"
+        url: "https://www.carbonbrief.org/feed/"
+      - name: "Canary Media"
+        url: "https://www.canarymedia.com/feed"
+      # --- VC・スタートアップ ---
+      - name: "a16z Blog"
+        url: "https://a16z.com/feed/"
+      - name: "Sequoia Capital"
+        url: "https://www.sequoiacap.com/feed/"
+      - name: "Y Combinator Blog"
+        url: "https://www.ycombinator.com/blog/rss/"
 
   JAPAN_SIGNAL:
-    description: "日本市場・テック動向"
+    description: "日本市場・テック・政策・スタートアップ"
     feeds:
+      # --- テックメディア ---
       - name: "はてなブックマーク - テクノロジー"
         url: "https://b.hatena.ne.jp/hotentry/it.rss"
       - name: "Publickey"
@@ -54,11 +110,44 @@ categories:
         url: "https://zenn.dev/feed"
       - name: "Gigazine"
         url: "https://gigazine.net/news/rss_2.0/"
+      - name: "ITmedia AI+"
+        url: "https://rss.itmedia.co.jp/rss/2.0/aiplus.xml"
+      - name: "AINOW"
+        url: "https://ainow.ai/feed/"
+      # --- ビジネス・スタートアップ ---
+      - name: "TechCrunch Japan"
+        url: "https://jp.techcrunch.com/feed/"
+      - name: "BRIDGE"
+        url: "https://thebridge.jp/feed"
+      - name: "日経クロステック"
+        url: "https://xtech.nikkei.com/rss/index.rdf"
+      # --- 政策・社会 ---
+      - name: "NHK News Web - 科学・文化"
+        url: "https://www.nhk.or.jp/rss/news/cat7.xml"
+      - name: "東洋経済オンライン"
+        url: "https://toyokeizai.net/list/feed/rss"
 
   AGRICULTURE:
-    description: "農業テック・スマート農業"
+    description: "農業テック・スマート農業・食料システム"
     feeds:
+      # --- AgTech ---
       - name: "AgFunder News"
         url: "https://agfundernews.com/feed"
+      - name: "Precision Ag"
+        url: "https://www.precisionag.com/feed/"
+      - name: "Future Farming"
+        url: "https://www.futurefarming.com/feed"
+      - name: "AgriTechTomorrow"
+        url: "https://www.agritechtomorrow.com/rss.xml"
+      # --- 日本農業 ---
       - name: "農業新聞"
         url: "https://www.agrinews.co.jp/rss"
+      - name: "マイナビ農業"
+        url: "https://agri.mynavi.jp/feed/"
+      - name: "スマート農業360"
+        url: "https://smartagri-jp.com/feed"
+      # --- 食料・サステナビリティ ---
+      - name: "Food Navigator"
+        url: "https://www.foodnavigator.com/rss/news"
+      - name: "The Counter (Food)"
+        url: "https://thecounter.org/feed/"

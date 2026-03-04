@@ -5,8 +5,8 @@
 
 # 全体設定
 global:
-  # 合計最大記事数（15分で読める分量）
-  max_total_items: 15
+  # 合計最大記事数（朝30分で読める分量）
+  max_total_items: 30
   # 対象範囲（過去N時間の記事）
   lookback_hours: 24
   # 要約方法: extractive / llm
@@ -20,28 +20,26 @@ global:
 # カテゴリ別設定
 categories:
   AI_RESEARCH:
-    max_items: 3
-    # starred_first: スター付きを優先、unread_top: 未読の新しい順
+    max_items: 8
     priority: newest_first
-    # 転用示唆のデフォルトタグ
     relevance_tags: ["本業", "個人開発"]
 
   AI_PRODUCT_SAAS:
-    max_items: 3
+    max_items: 7
     priority: newest_first
     relevance_tags: ["本業", "個人開発"]
 
   MACRO_STRUCTURE:
-    max_items: 3
-    priority: unread_top
+    max_items: 5
+    priority: newest_first
     relevance_tags: ["本業"]
 
   JAPAN_SIGNAL:
-    max_items: 3
+    max_items: 6
     priority: newest_first
     relevance_tags: ["本業", "個人開発"]
 
   AGRICULTURE:
-    max_items: 3
-    priority: unread_top
+    max_items: 4
+    priority: newest_first
     relevance_tags: ["農業"]
