@@ -70,6 +70,15 @@ def extractive_summarize(text: str, num_sentences: int = 3) -> str:
     return " ".join(t[2] for t in top)
 
 
+def _is_mostly_english(text: str) -> bool:
+    """テキストが主に英語かどうかを簡易判定。"""
+    ascii_chars = sum(1 for c in text[:500] if c.isascii() and c.isalpha())
+    total_alpha = sum(1 for c in text[:500] if c.isalpha())
+    if total_alpha == 0:
+        return False
+    return ascii_chars / total_alpha > 0.7
+
+
 def llm_summarize(text: str, num_sentences: int = 3) -> str:
     """LLM APIを使った要約。未設定の場合は extractive にフォールバック。"""
     api_key = os.environ.get("LLM_API_KEY", "")
@@ -81,8 +90,10 @@ def llm_summarize(text: str, num_sentences: int = 3) -> str:
         return extractive_summarize(text, num_sentences)
 
     prompt = (
-        f"以下の記事を{num_sentences}文以内で日本語で要約してください。"
-        f"事実のみを簡潔に述べ、洞察や意見は含めないでください。\n\n"
+        f"以下の記事を{num_sentences}文以内で**必ず日本語で**要約してください。"
+        f"英語の記事であっても日本語に翻訳して要約してください。"
+        f"事実のみを簡潔に述べ、洞察や意見は含めないでください。"
+        f"要約のみを出力し、前置きや説明は不要です。\n\n"
         f"{text[:3000]}"
     )
 
@@ -98,11 +109,13 @@ def llm_summarize(text: str, num_sentences: int = 3) -> str:
                 "messages": [{"role": "user", "content": prompt}],
                 "max_tokens": 500,
             },
-            timeout=30,
+            timeout=60,
         )
         if resp.status_code == 200:
             data = resp.json()
             return data["choices"][0]["message"]["content"].strip()
+        else:
+            print(f"[WARN] LLM API error {resp.status_code}: {resp.text[:200]}")
     except Exception as e:
         print(f"[WARN] LLM API 呼び出し失敗: {e}。extractive にフォールバック。")
 
