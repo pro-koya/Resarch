@@ -1,0 +1,47 @@
+# ============================================================
+# Digest Generation Configuration
+# 毎朝要約の対象とルールを宣言的に管理
+# ============================================================
+
+# 全体設定
+global:
+  # 合計最大記事数（15分で読める分量）
+  max_total_items: 15
+  # 対象範囲（過去N時間の記事）
+  lookback_hours: 24
+  # 要約方法: extractive / llm
+  # 環境変数 SUMMARIZER で上書き可能
+  summarizer: extractive
+  # 要約の文数（extractive時）
+  summary_sentences: 3
+  # 出力先ディレクトリ
+  output_dir: docs/digests
+
+# カテゴリ別設定
+categories:
+  AI_RESEARCH:
+    max_items: 3
+    # starred_first: スター付きを優先、unread_top: 未読の新しい順
+    priority: newest_first
+    # 転用示唆のデフォルトタグ
+    relevance_tags: ["本業", "個人開発"]
+
+  AI_PRODUCT_SAAS:
+    max_items: 3
+    priority: newest_first
+    relevance_tags: ["本業", "個人開発"]
+
+  MACRO_STRUCTURE:
+    max_items: 3
+    priority: unread_top
+    relevance_tags: ["本業"]
+
+  JAPAN_SIGNAL:
+    max_items: 3
+    priority: newest_first
+    relevance_tags: ["本業", "個人開発"]
+
+  AGRICULTURE:
+    max_items: 3
+    priority: unread_top
+    relevance_tags: ["農業"]
